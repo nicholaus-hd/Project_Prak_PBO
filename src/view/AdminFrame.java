@@ -17,6 +17,7 @@ public class AdminFrame extends javax.swing.JFrame {
     
     private final PasienController controller;
     private final DefaultTableModel tableModel;
+    private ButtonGroup groupJK;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AdminFrame.class.getName());
 
     /**
@@ -26,8 +27,14 @@ public class AdminFrame extends javax.swing.JFrame {
         initComponents();
         controller = new PasienController();
         tableModel = (DefaultTableModel) jTablePasien.getModel();
+
+        groupJK = new ButtonGroup();
+        groupJK.add(jRadioButtonLaki);
+        groupJK.add(jRadioButtonPerempuan);
+
         setLocationRelativeTo(null);
-        refreshTable(); // Load data awal via controller
+
+        refreshTable();
     }
 
     /**

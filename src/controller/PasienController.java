@@ -16,17 +16,6 @@ public class PasienController {
         this.dao = new PasienDAOImpl();
     }
 
-    // Handle Login Event
-    public String handleLogin(String username, String password) {
-        if (username == null || password == null) return null;
-        String u = username.trim().toLowerCase();
-        String p = password.trim();
-        
-        if ("admin".equals(u) && "admin123".equals(p)) return "admin";
-        if ("resepsionis".equals(u) && "res123".equals(p)) return "resepsionis";
-        return null;
-    }
-
     // Handle Tambah Event
     public boolean handleTambah(Pasien pasien) {
         if (pasien == null || pasien.getNoId().trim().isEmpty() || pasien.getNama().trim().isEmpty()) {

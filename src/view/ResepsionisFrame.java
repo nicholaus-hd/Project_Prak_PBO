@@ -23,7 +23,10 @@ public class ResepsionisFrame extends javax.swing.JFrame {
     public ResepsionisFrame() {
         initComponents();
         controller = new PasienController();
+
         setLocationRelativeTo(null);
+
+        jRadioButtonLaki.setSelected(true);
     }
 
     /**
@@ -185,7 +188,7 @@ public class ResepsionisFrame extends javax.swing.JFrame {
         String penanganan = (String) jComboBoxPenanganan.getSelectedItem();
         String catatan = jTextAreaCatatan.getText().trim();
 
-        Pasien pasien = new Pasien(noId, nama, jk, penanganan, catatan);
+        Pasien pasien = new Pasien(noId, nama, jk, penanganan, catatan) {};
 
         // 2. Delegasi ke Controller
         boolean sukses = controller.handleTambah(pasien);

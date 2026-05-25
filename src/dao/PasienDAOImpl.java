@@ -78,7 +78,7 @@ public class PasienDAOImpl implements PasienDAO {
             ResultSet rs = pstmt.executeQuery();
             
             if (rs.next()) {
-                pasien = new Pasien();
+                pasien = new Pasien() {};
                 pasien.setNoId(rs.getString("no_id"));
                 pasien.setNama(rs.getString("nama"));
                 pasien.setJk(rs.getString("jk"));
@@ -101,7 +101,7 @@ public class PasienDAOImpl implements PasienDAO {
              ResultSet rs = stmt.executeQuery(sql)) {
             
             while (rs.next()) {
-                Pasien pasien = new Pasien();
+                Pasien pasien = new Pasien() {};
                 pasien.setNoId(rs.getString("no_id"));
                 pasien.setNama(rs.getString("nama"));
                 pasien.setJk(rs.getString("jk"));
@@ -130,7 +130,7 @@ public class PasienDAOImpl implements PasienDAO {
             ResultSet rs = pstmt.executeQuery();
             
             while (rs.next()) {
-                Pasien pasien = new Pasien();
+                Pasien pasien = new Pasien() {};
                 pasien.setNoId(rs.getString("no_id"));
                 pasien.setNama(rs.getString("nama"));
                 pasien.setJk(rs.getString("jk"));
