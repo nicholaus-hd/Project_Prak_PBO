@@ -26,7 +26,6 @@ public class ResepsionisFrame extends javax.swing.JFrame {
 
         setLocationRelativeTo(null);
 
-        jRadioButtonLaki.setSelected(true);
     }
 
     /**
@@ -241,7 +240,7 @@ public class ResepsionisFrame extends javax.swing.JFrame {
     private void handleClear() {
         jTextFieldId.setText("");
         jTextFieldNama.setText("");
-        jRadioButtonLaki.setSelected(true);
+        buttonGroup1.clearSelection();
         jComboBoxPenanganan.setSelectedIndex(0);
         jTextAreaCatatan.setText("");
         jTextFieldId.requestFocus();

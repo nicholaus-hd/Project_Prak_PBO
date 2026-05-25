@@ -5,7 +5,6 @@
 package view;
 import controller.PasienController;
 import model.Pasien;
-import javax.swing.ButtonGroup;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
@@ -17,7 +16,6 @@ public class AdminFrame extends javax.swing.JFrame {
     
     private final PasienController controller;
     private final DefaultTableModel tableModel;
-    private ButtonGroup groupJK;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AdminFrame.class.getName());
 
     /**
@@ -27,10 +25,6 @@ public class AdminFrame extends javax.swing.JFrame {
         initComponents();
         controller = new PasienController();
         tableModel = (DefaultTableModel) jTablePasien.getModel();
-
-        groupJK = new ButtonGroup();
-        groupJK.add(jRadioButtonLaki);
-        groupJK.add(jRadioButtonPerempuan);
 
         setLocationRelativeTo(null);
 
@@ -46,6 +40,8 @@ public class AdminFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
         jRadioButtonPerempuan = new javax.swing.JRadioButton();
         jButtonDelete = new javax.swing.JButton();
         jComboBoxPenanganan = new javax.swing.JComboBox<>();
@@ -68,6 +64,7 @@ public class AdminFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        buttonGroup1.add(jRadioButtonPerempuan);
         jRadioButtonPerempuan.setText("Perempuan");
 
         jButtonDelete.setText("Delete");
@@ -130,6 +127,7 @@ public class AdminFrame extends javax.swing.JFrame {
         jButtonLogOut.setText("Log Out");
         jButtonLogOut.addActionListener(this::jButtonLogOutActionPerformed);
 
+        buttonGroup1.add(jRadioButtonLaki);
         jRadioButtonLaki.setText("Laki-Laki");
         jRadioButtonLaki.addActionListener(this::jRadioButtonLakiActionPerformed);
 
@@ -265,8 +263,8 @@ public class AdminFrame extends javax.swing.JFrame {
             jTextFieldNama.setText(tableModel.getValueAt(row, 1).toString());
             
             String jk = tableModel.getValueAt(row, 2).toString();
-            jRadioButtonLaki.setSelected(jk.equals("Laki-Laki"));
-            jRadioButtonPerempuan.setSelected(!jRadioButtonLaki.isSelected());
+            if (jk.equals("Laki-Laki")) jRadioButtonLaki.setSelected(true);
+            else jRadioButtonPerempuan.setSelected(true);
             
             jComboBoxPenanganan.setSelectedItem(tableModel.getValueAt(row, 3).toString());
             jTextAreaCatatan.setText(tableModel.getValueAt(row, 4).toString());
@@ -337,7 +335,7 @@ public class AdminFrame extends javax.swing.JFrame {
     private void handleClear() {
         jTextFieldId.setText("");
         jTextFieldNama.setText("");
-        jRadioButtonLaki.setSelected(true);
+        buttonGroup1.clearSelection();
         jComboBoxPenanganan.setSelectedIndex(0);
         jTextAreaCatatan.setText("");
         jTablePasien.clearSelection();
@@ -345,6 +343,8 @@ public class AdminFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JButton jButtonClear;
     private javax.swing.JButton jButtonDelete;
     private javax.swing.JButton jButtonLogOut;
