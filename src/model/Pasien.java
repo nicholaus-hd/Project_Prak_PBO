@@ -1,50 +1,40 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
-/**
- *
- * @author lenovo
- */
-public abstract class Pasien {
-    // Encapsulation: atribut bersifat private
+public class Pasien {
+    private String noId;
     private String nama;
-    private String noIdentitas;
-    private String JenisKelamin;
-    private String Catatan;
+    private String jk;
+    private String penanganan;
+    private String catatan;
 
-    // Constructor
-    public Pasien(String nama, String noIdentitas, String JenisKelamin, String Catatan) {
+    public Pasien() {}
+
+    public Pasien(String noId, String nama, String jk, String penanganan, String catatan) {
+        this.noId = noId;
         this.nama = nama;
-        this.noIdentitas = noIdentitas;
-        this.JenisKelamin = JenisKelamin;
-        this.Catatan = Catatan;
+        this.jk = jk;
+        this.penanganan = penanganan;
+        this.catatan = catatan;
     }
 
-    // Abstract method yang harus diimplementasi oleh subclass (Abstraction)
-    public abstract String getJenisPerawatan();
-
-    // Getter dan Setter (Encapsulation)
-    public String getNama() {
-        return nama;
-    }
-
-    public void setNama(String nama) {
-        this.nama = nama;
-    }
-
-    public String getNoIdentitas() {
-        return noIdentitas;
-    }
-
-    public void setNoIdentitas(String noIdentitas) {
-        this.noIdentitas = noIdentitas;
-    }
-
+    // Getters dan Setters
+    public String getNoId() { return noId; }
+    public void setNoId(String noId) { this.noId = noId; }
+    
+    public String getNama() { return nama; }
+    public void setNama(String nama) { this.nama = nama; }
+    
+    public String getJk() { return jk; }
+    public void setJk(String jk) { this.jk = jk; }
+    
+    public String getPenanganan() { return penanganan; }
+    public void setPenanganan(String penanganan) { this.penanganan = penanganan; }
+    
+    public String getCatatan() { return catatan; }
+    public void setCatatan(String catatan) { this.catatan = catatan; }
+    
     @Override
     public String toString() {
-        return "Pasien{nama='" + nama + "', noIdentitas='" + noIdentitas + "', jenis='" + getJenisPerawatan() + "'}";
+        return "Pasien{" + "noId=" + noId + ", nama=" + nama + '}';
     }
 }

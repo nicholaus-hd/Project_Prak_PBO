@@ -3,13 +3,20 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package view;
-
+import controller.PasienController;
+import model.Pasien;
+import javax.swing.ButtonGroup;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import java.util.List;
 /**
  *
  * @author Enhadeee
  */
 public class AdminFrame extends javax.swing.JFrame {
     
+    private final PasienController controller;
+    private final DefaultTableModel tableModel;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AdminFrame.class.getName());
 
     /**
@@ -17,6 +24,10 @@ public class AdminFrame extends javax.swing.JFrame {
      */
     public AdminFrame() {
         initComponents();
+        controller = new PasienController();
+        tableModel = (DefaultTableModel) jTablePasien.getModel();
+        setLocationRelativeTo(null);
+        refreshTable(); // Load data awal via controller
     }
 
     /**
@@ -160,11 +171,8 @@ public class AdminFrame extends javax.swing.JFrame {
                     .addComponent(jLabel14, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonLogOut, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 442, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabelId)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextFieldId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -191,8 +199,9 @@ public class AdminFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButtonDelete)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButtonClear)
-                        .addGap(15, 15, 15))))
+                        .addComponent(jButtonClear))
+                    .addComponent(jScrollPane3))
+                .addGap(15, 15, 15))
         );
 
         pack();
@@ -200,10 +209,37 @@ public class AdminFrame extends javax.swing.JFrame {
 
     private void jButtonClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClearActionPerformed
         // TODO add your handling code here:
+        handleClear();
     }//GEN-LAST:event_jButtonClearActionPerformed
 
     private void jButtonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUpdateActionPerformed
         // TODO add your handling code here:
+        String noId = jTextFieldId.getText().trim();
+        if (noId.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Pilih data dari tabel terlebih dahulu!", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // 1. Rakit Data
+        Pasien pasien = new Pasien(
+            noId,
+            jTextFieldNama.getText().trim(),
+            jRadioButtonLaki.isSelected() ? "Laki-Laki" : "Perempuan",
+            (String) jComboBoxPenanganan.getSelectedItem(),
+            jTextAreaCatatan.getText().trim()
+        );
+
+        // 2. Delegasi ke Controller
+        boolean sukses = controller.handleUpdate(pasien);
+
+        // 3. View merespons
+        if (sukses) {
+            JOptionPane.showMessageDialog(this, "Data berhasil diperbarui!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
+            refreshTable();
+            handleClear();
+        } else {
+            JOptionPane.showMessageDialog(this, "Gagal update data! Cek ID dan Nama.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButtonUpdateActionPerformed
 
     private void jTextFieldNamaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNamaActionPerformed
@@ -216,14 +252,45 @@ public class AdminFrame extends javax.swing.JFrame {
 
     private void jTablePasienMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTablePasienMouseClicked
         // TODO add your handling code here:
+        int row = jTablePasien.getSelectedRow();
+        if (row != -1) {
+            jTextFieldId.setText(tableModel.getValueAt(row, 0).toString());
+            jTextFieldNama.setText(tableModel.getValueAt(row, 1).toString());
+            
+            String jk = tableModel.getValueAt(row, 2).toString();
+            jRadioButtonLaki.setSelected(jk.equals("Laki-Laki"));
+            jRadioButtonPerempuan.setSelected(!jRadioButtonLaki.isSelected());
+            
+            jComboBoxPenanganan.setSelectedItem(tableModel.getValueAt(row, 3).toString());
+            jTextAreaCatatan.setText(tableModel.getValueAt(row, 4).toString());
+        }
     }//GEN-LAST:event_jTablePasienMouseClicked
 
     private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
         // TODO add your handling code here:
+        String noId = jTextFieldId.getText().trim();
+        if (noId.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Pilih data yang akan dihapus!", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        int confirm = JOptionPane.showConfirmDialog(this, "Yakin hapus pasien ID: " + noId + "?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            // Delegasi ke Controller
+            if (controller.handleDelete(noId)) {
+                JOptionPane.showMessageDialog(this, "Data berhasil dihapus!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
+                refreshTable();
+                handleClear();
+            } else {
+                JOptionPane.showMessageDialog(this, "Gagal menghapus data!", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_jButtonDeleteActionPerformed
 
     private void jButtonLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLogOutActionPerformed
         // TODO add your handling code here:
+        dispose();
+        new MenuFrame().setVisible(true);
     }//GEN-LAST:event_jButtonLogOutActionPerformed
 
     /**
@@ -249,6 +316,25 @@ public class AdminFrame extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new AdminFrame().setVisible(true));
+    }
+    
+    // View-only helpers
+    private void refreshTable() {
+        tableModel.setRowCount(0);
+        List<Pasien> data = controller.handleGetAllPasien(); // Ambil dari Controller
+        for (Pasien p : data) {
+            tableModel.addRow(new Object[]{p.getNoId(), p.getNama(), p.getJk(), p.getPenanganan(), p.getCatatan()});
+        }
+    }
+    
+    private void handleClear() {
+        jTextFieldId.setText("");
+        jTextFieldNama.setText("");
+        jRadioButtonLaki.setSelected(true);
+        jComboBoxPenanganan.setSelectedIndex(0);
+        jTextAreaCatatan.setText("");
+        jTablePasien.clearSelection();
+        jTextFieldId.requestFocus();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

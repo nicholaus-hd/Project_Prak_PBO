@@ -15,6 +15,7 @@ public class KlinikRawatInap {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        new view.MenuFrame().setVisible(true);
     }
     
 }

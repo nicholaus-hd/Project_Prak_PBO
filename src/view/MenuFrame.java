@@ -4,6 +4,9 @@
  */
 package view;
 
+import controller.PasienController;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Enhadeee
@@ -11,12 +14,13 @@ package view;
 public class MenuFrame extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MenuFrame.class.getName());
-
-    /**
-     * Creates new form MenuFrame
-     */
+    private final PasienController controller;
+ 
     public MenuFrame() {
         initComponents();
+        controller = new PasienController();
+        setLocationRelativeTo(null);
+        jPasswordFieldPass.setText(""); // Clear placeholder
     }
 
     /**
@@ -96,10 +100,32 @@ public class MenuFrame extends javax.swing.JFrame {
 
     private void jTextFieldUnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldUnameActionPerformed
         // TODO add your handling code here:
+        jPasswordFieldPass.requestFocus();
     }//GEN-LAST:event_jTextFieldUnameActionPerformed
 
     private void jButtonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLoginActionPerformed
         // TODO add your handling code here:
+        // 1. Ambil data dari View
+        String user = jTextFieldUname.getText();
+        String pass = new String(jPasswordFieldPass.getPassword());
+
+        // 2. Delegasi ke Controller
+        String role = controller.handleLogin(user, pass);
+
+        // 3. View menangani hasil dari Controller
+        if ("admin".equals(role)) {
+            JOptionPane.showMessageDialog(this, "Login berhasil sebagai Admin!");
+            dispose();
+            new AdminFrame().setVisible(true);
+        } else if ("resepsionis".equals(role)) {
+            JOptionPane.showMessageDialog(this, "Login berhasil sebagai Resepsionis!");
+            dispose();
+            new ResepsionisFrame().setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "Username atau Password salah!", "Login Gagal", JOptionPane.ERROR_MESSAGE);
+            jPasswordFieldPass.setText("");
+            jTextFieldUname.requestFocus();
+        }
     }//GEN-LAST:event_jButtonLoginActionPerformed
 
     /**

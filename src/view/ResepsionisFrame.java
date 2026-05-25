@@ -4,19 +4,26 @@
  */
 package view;
 
+import controller.PasienController;
+import model.Pasien;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Enhadeee
  */
 public class ResepsionisFrame extends javax.swing.JFrame {
     
+    private final PasienController controller;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ResepsionisFrame.class.getName());
-
+    
     /**
      * Creates new form ResepsionisFrame
      */
     public ResepsionisFrame() {
         initComponents();
+        controller = new PasienController();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -28,6 +35,7 @@ public class ResepsionisFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jLabelNama = new javax.swing.JLabel();
         jTextFieldNama = new javax.swing.JTextField();
         jRadioButtonPerempuan = new javax.swing.JRadioButton();
@@ -51,6 +59,7 @@ public class ResepsionisFrame extends javax.swing.JFrame {
 
         jTextFieldNama.addActionListener(this::jTextFieldNamaActionPerformed);
 
+        buttonGroup1.add(jRadioButtonPerempuan);
         jRadioButtonPerempuan.setText("Perempuan");
 
         jLabelJk.setText("Jenis Kelamin");
@@ -61,6 +70,7 @@ public class ResepsionisFrame extends javax.swing.JFrame {
 
         jLabelPenanganan.setText("Penanganan");
 
+        buttonGroup1.add(jRadioButtonLaki);
         jRadioButtonLaki.setText("Laki-Laki");
         jRadioButtonLaki.addActionListener(this::jRadioButtonLakiActionPerformed);
 
@@ -159,6 +169,7 @@ public class ResepsionisFrame extends javax.swing.JFrame {
 
     private void jTextFieldNamaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNamaActionPerformed
         // TODO add your handling code here:
+        jButtonTambah.requestFocus();
     }//GEN-LAST:event_jTextFieldNamaActionPerformed
 
     private void jRadioButtonLakiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonLakiActionPerformed
@@ -167,14 +178,36 @@ public class ResepsionisFrame extends javax.swing.JFrame {
 
     private void jButtonTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTambahActionPerformed
         // TODO add your handling code here:
+        /// 1. Rakit Data dari View
+        String noId = jTextFieldId.getText().trim();
+        String nama = jTextFieldNama.getText().trim();
+        String jk = jRadioButtonLaki.isSelected() ? "Laki-Laki" : "Perempuan";
+        String penanganan = (String) jComboBoxPenanganan.getSelectedItem();
+        String catatan = jTextAreaCatatan.getText().trim();
+
+        Pasien pasien = new Pasien(noId, nama, jk, penanganan, catatan);
+
+        // 2. Delegasi ke Controller
+        boolean sukses = controller.handleTambah(pasien);
+
+        // 3. View merespons hasil Controller
+        if (sukses) {
+            JOptionPane.showMessageDialog(this, "Data pasien berhasil ditambahkan!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
+            handleClear();
+        } else {
+            JOptionPane.showMessageDialog(this, "Gagal menyimpan! Pastikan ID unik dan Nama tidak kosong.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButtonTambahActionPerformed
 
     private void jButtonClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClearActionPerformed
         // TODO add your handling code here:
+        handleClear();
     }//GEN-LAST:event_jButtonClearActionPerformed
 
     private void jButtonLogOut1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLogOut1ActionPerformed
         // TODO add your handling code here:
+        dispose();
+        new MenuFrame().setVisible(true);
     }//GEN-LAST:event_jButtonLogOut1ActionPerformed
 
     /**
@@ -201,8 +234,18 @@ public class ResepsionisFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new ResepsionisFrame().setVisible(true));
     }
+        // Helper View-only
+    private void handleClear() {
+        jTextFieldId.setText("");
+        jTextFieldNama.setText("");
+        jRadioButtonLaki.setSelected(true);
+        jComboBoxPenanganan.setSelectedIndex(0);
+        jTextAreaCatatan.setText("");
+        jTextFieldId.requestFocus();
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton jButtonClear;
     private javax.swing.JButton jButtonLogOut1;
     private javax.swing.JButton jButtonTambah;
