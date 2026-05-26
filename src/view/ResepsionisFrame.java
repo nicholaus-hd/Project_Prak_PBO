@@ -41,8 +41,6 @@ public class ResepsionisFrame extends javax.swing.JFrame {
         if (user != null) {
             // Update judul window
             setTitle("Dashboard " + user.getRole() + " - Input Pasien");
-            boolean canEdit = user.canEditDatabase();
-            
         }
     }
 
@@ -205,7 +203,7 @@ public class ResepsionisFrame extends javax.swing.JFrame {
 
     private void jButtonTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTambahActionPerformed
         // TODO add your handling code here:
-        /// 1. Rakit Data dari View
+        // 1. Load Data dari View
         String noId = jTextFieldId.getText().trim();
         String nama = jTextFieldNama.getText().trim();
         String jk = jRadioButtonLaki.isSelected() ? "Laki-Laki" : "Perempuan";

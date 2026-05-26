@@ -43,7 +43,7 @@ public class AdminFrame extends javax.swing.JFrame {
     
         private void setupUI(User user) {
         if (user != null) {
-            // Update judul window
+            // Judul window
             setTitle("Dashboard " + user.getRole() + " - Manajemen Data Pasien");
         
             // POLYMORPHISM: Gunakan method canEditDatabase()
@@ -264,7 +264,7 @@ public class AdminFrame extends javax.swing.JFrame {
             return;
         }
 
-        // 1. Rakit Data
+        // 1. Load Data
         Pasien pasien = new Pasien(
             noId,
             jTextFieldNama.getText().trim(),

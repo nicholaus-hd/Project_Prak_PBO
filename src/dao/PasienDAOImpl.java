@@ -112,35 +112,6 @@ public class PasienDAOImpl implements PasienDAO {
     }
 
     @Override
-    public List<Pasien> search(String keyword) {
-        List<Pasien> listPasien = new ArrayList<>();
-        String sql = "SELECT * FROM pasien WHERE nama LIKE ? OR no_id LIKE ? ORDER BY nama ASC";
-
-        try (Connection conn = connector.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            String searchKeyword = "%" + keyword + "%";
-            pstmt.setString(1, searchKeyword);
-            pstmt.setString(2, searchKeyword);
-
-            ResultSet rs = pstmt.executeQuery();
-
-            while (rs.next()) {
-                Pasien pasien = new Pasien() {
-                };
-                pasien.setNoId(rs.getString("no_id"));
-                pasien.setNama(rs.getString("nama"));
-                pasien.setJk(rs.getString("jk"));
-                pasien.setPenanganan(rs.getString("penanganan"));
-                pasien.setCatatan(rs.getString("catatan"));
-                listPasien.add(pasien);
-            }
-        } catch (SQLException e) {
-            Logger.getLogger(PasienDAOImpl.class.getName()).log(Level.SEVERE, null, e);
-        }
-        return listPasien;
-    }
-
-    @Override
     public boolean exportToCSV(List<Pasien> listPasien) {
         String fileName = "data_pasien_"
                 + java.time.LocalDateTime.now().format(
