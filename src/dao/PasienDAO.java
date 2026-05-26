@@ -14,4 +14,5 @@ public interface PasienDAO {
     Pasien getById(String noId);
     List<Pasien> getAll();
     List<Pasien> search(String keyword);
+    boolean exportToCSV(List<Pasien> listPasien);
 }

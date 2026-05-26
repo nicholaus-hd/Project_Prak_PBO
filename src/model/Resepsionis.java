@@ -18,4 +18,10 @@ public class Resepsionis extends User{
     public String getRole() {
         return "Resepsionis";
     }
+    @Override public javax.swing.JFrame getDashboardFrame() { 
+        return new view.ResepsionisFrame(this); 
+    }
+    @Override public boolean canEditDatabase() { 
+        return false; 
+    }
 }

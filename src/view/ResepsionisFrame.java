@@ -7,13 +7,14 @@ package view;
 import controller.PasienController;
 import model.Pasien;
 import javax.swing.JOptionPane;
+import model.User;
 
 /**
  *
  * @author Enhadeee
  */
 public class ResepsionisFrame extends javax.swing.JFrame {
-    
+    private User currentUser;
     private final PasienController controller;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ResepsionisFrame.class.getName());
     
@@ -23,9 +24,26 @@ public class ResepsionisFrame extends javax.swing.JFrame {
     public ResepsionisFrame() {
         initComponents();
         controller = new PasienController();
-
         setLocationRelativeTo(null);
-
+        // Mode testing - tidak ada user yang login
+        setupUI(null);
+    }
+    
+    public ResepsionisFrame(User user) {
+        this.currentUser = user;
+        initComponents();
+        controller = new PasienController();
+        setLocationRelativeTo(null);
+        setupUI(user);
+    }
+    
+    private void setupUI(User user) {
+        if (user != null) {
+            // Update judul window
+            setTitle("Dashboard " + user.getRole() + " - Input Pasien");
+            boolean canEdit = user.canEditDatabase();
+            
+        }
     }
 
     /**
@@ -54,6 +72,7 @@ public class ResepsionisFrame extends javax.swing.JFrame {
         jTextAreaCatatan = new javax.swing.JTextArea();
         jButtonTambah = new javax.swing.JButton();
         jButtonLogOut1 = new javax.swing.JButton();
+        jButtonLihatData = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -94,6 +113,9 @@ public class ResepsionisFrame extends javax.swing.JFrame {
         jButtonLogOut1.setText("Log Out");
         jButtonLogOut1.addActionListener(this::jButtonLogOut1ActionPerformed);
 
+        jButtonLihatData.setText("Lihat Data");
+        jButtonLihatData.addActionListener(this::jButtonLihatDataActionPerformed);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -104,6 +126,8 @@ public class ResepsionisFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabelDataPasien)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButtonLihatData)
+                        .addGap(18, 18, 18)
                         .addComponent(jButtonLogOut1))
                     .addComponent(jLabelJk, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabelNama, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -136,7 +160,8 @@ public class ResepsionisFrame extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelDataPasien, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
-                    .addComponent(jButtonLogOut1))
+                    .addComponent(jButtonLogOut1)
+                    .addComponent(jButtonLihatData))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabelId)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -212,6 +237,12 @@ public class ResepsionisFrame extends javax.swing.JFrame {
         new MenuFrame().setVisible(true);
     }//GEN-LAST:event_jButtonLogOut1ActionPerformed
 
+    private void jButtonLihatDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLihatDataActionPerformed
+        // TODO add your handling code here:
+        dispose();
+        new AdminFrame(currentUser).setVisible(true);
+    }//GEN-LAST:event_jButtonLihatDataActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -249,6 +280,7 @@ public class ResepsionisFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton jButtonClear;
+    private javax.swing.JButton jButtonLihatData;
     private javax.swing.JButton jButtonLogOut1;
     private javax.swing.JButton jButtonTambah;
     private javax.swing.JComboBox<String> jComboBoxPenanganan;

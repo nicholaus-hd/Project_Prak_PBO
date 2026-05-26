@@ -42,4 +42,15 @@ public class PasienController {
     public List<Pasien> handleGetAllPasien() {
         return dao.getAll();
     }
+    
+    // Handle Export to CSV
+public boolean handleExportToCSV() {
+    List<Pasien> listPasien = dao.getAll();
+    
+    if (listPasien == null || listPasien.isEmpty()) {
+        return false;
+    }
+    
+    return dao.exportToCSV(listPasien);
+}
 }

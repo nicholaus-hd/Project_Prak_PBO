@@ -21,6 +21,8 @@ public abstract class User {
 
     // Abstract method untuk mendapatkan role user (Abstraction)
     public abstract String getRole();
+    public abstract javax.swing.JFrame getDashboardFrame();
+    public abstract boolean canEditDatabase();
 
     // Getter dan Setter (Encapsulation)
     public String getUsername() {

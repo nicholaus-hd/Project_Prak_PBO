@@ -18,4 +18,10 @@ public class Admin extends User{
     public String getRole() {
         return "Admin";
     }
+    @Override public javax.swing.JFrame getDashboardFrame() { 
+        return new view.AdminFrame(this); 
+    }
+    @Override public boolean canEditDatabase() { 
+        return true; 
+    }
 }

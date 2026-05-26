@@ -110,40 +110,21 @@ public class MenuFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         String username = jTextFieldUname.getText();
         String password = new String(jPasswordFieldPass.getPassword());
-
         User user = controller.handleLogin(username, password);
 
-        if(user instanceof Admin) {
-
-            JOptionPane.showMessageDialog(
-                this,
-                "Login berhasil sebagai Admin!"
-            );
-
+        if (user instanceof Admin) {
+            JOptionPane.showMessageDialog(this, "Login berhasil sebagai Admin!");
             dispose();
-            new AdminFrame().setVisible(true);
+            new AdminFrame(user).setVisible(true); 
         }
-
-        else if(user instanceof Resepsionis) {
-
-            JOptionPane.showMessageDialog(
-                this,
-                "Login berhasil sebagai Resepsionis!"
-            );
-
+        else if (user instanceof Resepsionis) {
+            JOptionPane.showMessageDialog(this, "Login berhasil sebagai Resepsionis!");
             dispose();
-            new ResepsionisFrame().setVisible(true);
+            new ResepsionisFrame(user).setVisible(true); 
         }
-
         else {
-
-            JOptionPane.showMessageDialog(
-                this,
-                "Username atau Password salah!",
-                "Login Gagal",
-                JOptionPane.ERROR_MESSAGE
-            );
-
+            JOptionPane.showMessageDialog(this, "Username atau Password salah!", 
+                "Login Gagal", JOptionPane.ERROR_MESSAGE);
             jPasswordFieldPass.setText("");
             jTextFieldUname.requestFocus();
         }
